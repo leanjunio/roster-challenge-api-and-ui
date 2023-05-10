@@ -63,4 +63,10 @@ For example:
 - UI Design (if that's the focus you chose)
 - Testing
 
+**Submission Requirements:**
+
+- A link to your GitHub code repository (or silmilar) that allows us to view and download the code
+- Instructions on how to run the code locally
+- A link to your app which is hosted (using AWS< Azure, GCP, or similar)
+
 ## Good luck, and have fun!
