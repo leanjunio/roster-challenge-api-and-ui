@@ -30,6 +30,7 @@ export default async function handler(
   request: VercelRequest,
   response: VercelResponse,
 ) {
+  console.log({ db: process.env.MONGODB_URI })
   await connectToDatabase(process.env.MONGODB_URI ?? 'mongodb://localhost:27017/rebel-db');
 
   response.setHeader('Access-Control-Allow-Origin', '*')

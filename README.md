@@ -91,3 +91,5 @@ NOTE: run from inside the client folder
 ```
 pnpm start --dotenv=./packages/client/.env
 ```
+
+mongodb+srv://leanjunio:mRchMCQkrUNKRZNY@serverlessinstance0.fjo6g.mongodb.net/rebel-db
