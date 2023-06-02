@@ -70,3 +70,14 @@ For example:
 - A link to your app which is hosted (using AWS, Azure, GCP, or similar)
 
 ## Good luck, and have fun!
+
+## Pre-requisites
+- Docker
+
+### Seeding the database
+
+The `docker-compose.yaml` file contains the configuration to run mongodb and redis locally as well as the necessary script to seed the local mongodb instance
+
+```bash
+docker compose up --build
+```

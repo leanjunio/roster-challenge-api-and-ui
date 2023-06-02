@@ -1,0 +1,21 @@
+version: '3'
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+
+  mongo_seed:
+    image: mongo
+    links:
+      - mongodb
+    volumes:
+      - ./roster.json:/roster.json
+      - ./import.sh:/import.sh
+    command:
+      ./import.sh
