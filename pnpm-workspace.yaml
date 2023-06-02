@@ -1,0 +1,2 @@
+packages:
+  - 'packages/*' # tells pnpm that each directory under the `packages` dir is a separate package
