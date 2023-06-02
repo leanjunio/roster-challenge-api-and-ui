@@ -81,3 +81,13 @@ The `docker-compose.yaml` file contains the configuration to run mongodb and red
 ```bash
 docker compose up --build
 ```
+
+### Run the backend and the frontend
+```
+vercel dev --token {{ token }} --yes --listen 3000 --cwd ./packages  
+```
+
+NOTE: run from inside the client folder
+```
+pnpm start --dotenv=./packages/client/.env
+```
