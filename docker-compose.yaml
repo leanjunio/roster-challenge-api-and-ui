@@ -9,7 +9,9 @@ services:
     image: mongo
     ports:
       - 27017:27017
-
+    volumes:
+      - mongodb_data:/data/db
+      
   mongo_seed:
     image: mongo
     links:
@@ -19,3 +21,6 @@ services:
       - ./import.sh:/import.sh
     command:
       ./import.sh
+
+volumes:
+  mongodb_data
