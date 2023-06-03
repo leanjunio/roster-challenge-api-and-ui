@@ -26,22 +26,35 @@ async function connectToDatabase(uri) {
   return client;
 }
 
-export default async function handler(
+const allowCors = fn => async (req, res) => {
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  // another common pattern
+  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  )
+  if (req.method === 'OPTIONS') {
+    res.status(200).end()
+    return
+  }
+  return await fn(req, res)
+}
+
+
+async function handler(
   request: VercelRequest,
   response: VercelResponse,
 ) {
   console.log({ db: process.env.MONGODB_URI })
   await connectToDatabase(process.env.MONGODB_URI ?? 'mongodb://localhost:27017/rebel-db');
 
-  response.setHeader('Access-Control-Allow-Origin', '*')
-  response.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-  response.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  )
-
   if (request.method === 'GET') {
     const artists = await artist.find({}).exec();
     return response.status(200).send(artists);
   }
 }
+
+export default allowCors(handler);

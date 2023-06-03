@@ -1,4 +1,5 @@
 import './App.css';
+import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
 type Artist = {
@@ -8,10 +9,12 @@ type Artist = {
   streams: number;
 }
 
-const api = process.env.REACT_APP_API_URI ?? 'http://localhost:3000/api/handler';
+const api = process.env.REACT_APP_API_URI ?? 'http://localhost:8000/api/handler';
 
 function App() {
-  const { data, error, status } = useQuery<Artist[]>({ queryKey: ['artists'], queryFn: () => fetch(api).then(res => res.json()) });
+  const { data, error, status } = useQuery<Artist[]>({
+    queryKey: ['artists'], queryFn: () => axios.get(api).then(res => res.data)
+  });
 
   if (status === 'loading') {
     return <span>Loading...</span>

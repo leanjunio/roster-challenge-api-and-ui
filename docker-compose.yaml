@@ -1,14 +1,44 @@
-version: '3'
+version: '3.8'
 services:
   redis:
     image: redis
     ports:
       - 6379:6379
 
+  client:
+    build: ./packages/client
+    volumes:
+      - ./packages/client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - server
+
+  server:
+    build: ./packages/api
+    volumes:
+      - ./packages/api:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8000:8000
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379
+      - VERCEL_TOKEN=${VERCEL_TOKEN}
+    depends_on:
+      - mongodb
+      - redis
+
   mongodb:
     image: mongo
     ports:
       - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
 
   mongo_seed:
     image: mongo
@@ -19,3 +49,7 @@ services:
       - ./import.sh:/import.sh
     command:
       ./import.sh
+
+volumes:
+  mongodb_data:
+  redis_data:
