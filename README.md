@@ -70,3 +70,7 @@ For example:
 - A link to your app which is hosted (using AWS, Azure, GCP, or similar)
 
 ## Good luck, and have fun!
+
+## Instructions
+
+
