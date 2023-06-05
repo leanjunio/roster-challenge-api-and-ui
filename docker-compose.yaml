@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  client:
+    build: ./client
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules/
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
+
+  server:
+    build: ./server
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules/
+    ports:
+      - 8080:8080
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    # volumes:
+      # - mongodb_data:/data/db
+
+  mongo_seed:
+    image: mongo
+    depends_on:
+      - mongodb
+    volumes:
+      - ./roster.json:/roster.json
+      - ./import.sh:/import.sh
+    command:
+      ./import.sh
+
+volumes:
+  # mongodb_data:
+  redis_data:
