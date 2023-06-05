@@ -1,24 +1,47 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useQuery } from '@tanstack/react-query';
+
+type Artist = {
+  _id: string;
+  artist: string;
+  rate: number;
+  streams: number;
+}
 
 function App() {
+  const { isLoading, isSuccess, error, data } = useQuery<Artist[]>({
+    queryKey: ['artists'],
+    queryFn: () => fetch(`${process.env.REACT_APP_API_URL}/artists`).then(res => res.json())
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Artists</h1>
+      {isLoading && <p>Loading...</p>}
+      {isSuccess && (
+        <main>
+          <table>
+            <thead>
+              <tr>
+                <th>Artist Name</th>
+                <th>Rate</th>
+                <th>Streams</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map(artist => (
+                <tr key={artist._id}>
+                  <td>{artist.artist}</td>
+                  <td>{artist.rate}</td>
+                  <td>{artist.streams}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </main>
+      )}
     </div>
   );
 }

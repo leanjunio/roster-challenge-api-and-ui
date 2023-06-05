@@ -2,7 +2,15 @@
   text-align: center;
 }
 
-.App-logo {
+main {
+  max-width: 80vw;
+  margin: 0 auto;
+}
+
+table {
+  min-width: 100%
+}
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -35,4 +43,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
