@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatToCAD } from './utils/currency';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Layout } from './components/Layout/Layout';
 import { Artist } from './types/artist';
 import {
@@ -16,10 +16,13 @@ import {
   Td,
   TableCaption,
   TableContainer,
-  Text
+  Text,
+  Button,
+  Link
 } from '@chakra-ui/react'
 
 function App() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isLoading, isSuccess, error, data } = useQuery<Artist[]>({
     queryKey: ['artists'],
@@ -34,6 +37,10 @@ function App() {
     mutation.mutate(id, {
       onSuccess: () => queryClient.invalidateQueries(['artists'])
     });
+  }
+
+  function onUpdateArtistClick(id: Artist["_id"]) {
+    navigate(`/artists/${id}`);
   }
 
   return (
@@ -64,8 +71,12 @@ function App() {
                     <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
                   </Td>
                   <Td className="artist__actions">
-                    <Link to={`/artists/${artist._id}`}>Update</Link>
-                    <button className="artist__delete" onClick={() => handleCompletedPayoutChange(artist._id)}>Delete</button>
+                    <Button onClick={() => onUpdateArtistClick(artist._id)} colorScheme='teal' variant='solid'>
+                      Update
+                    </Button>
+                    <Button colorScheme='red' variant='solid'>
+                      Delete
+                    </Button>
                   </Td>
                 </Tr>
               ))}
