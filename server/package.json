@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon ./index.ts",
     "prod": "node dist/index.js",
-    "build": "NODE_ENV=production tsc"
+    "build": "npm install; tsc"
   },
   "keywords": [],
   "author": "",
