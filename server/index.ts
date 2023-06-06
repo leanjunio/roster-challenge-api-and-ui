@@ -33,6 +33,18 @@ app.get('/api/artists/:id', async (req: Request, res: Response) => {
   }
 });
 
+app.post('/api/artists', async (req: Request, res: Response) => {
+  const artist = new Artist({
+    artist: req.body.artist,
+    rate: req.body.rate,
+    streams: req.body.streams,
+    isCompletelyPaid: req.body.isCompletelyPaid,
+  });
+
+  const newArtist = await artist.save();
+  res.send(newArtist);
+});
+
 app.patch('/api/artists/:id/isCompletelyPaid', async (req: Request, res: Response) => {
   const artist = await Artist.findById(req.params.id);
   if (artist) {
