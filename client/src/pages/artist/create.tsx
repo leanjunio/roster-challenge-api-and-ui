@@ -8,9 +8,11 @@ import { Artist } from "../../types/artist";
 import { useNavigate } from "react-router-dom";
 
 const createArtistSchema = z.object({
-  artist: z.string().min(1).max(255),
-  rate: z.number().min(0.0000000001).max(5),
-  streams: z.number().min(0),
+  artist: z.string().min(1, { message: "Artist name is required" }),
+  rate: z.number({
+    required_error: "Required"
+  }).min(0.0000000001, { message: "Rate is required" }),
+  streams: z.number().min(0, { message: "Streams is required" }),
   isCompletelyPaid: z.boolean(),
 });
 
@@ -44,22 +46,22 @@ export function CreateArtistPage() {
     <Layout>
       <div className="flex flex-row justify-between my-10">
         <article className="prose">
-          <h1>Update Artists</h1>
+          <h1>Create Artist</h1>
         </article>
       </div>
       <div className="max-w-lg mx-auto">
-        <h1 className="text-2xl my-10">Creating record</h1>
+        <h1 className="text-2xl my-10">Enter artist details</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Artist Name</span>
             </label>
             <input {...register("artist")} type="text" placeholder="Taylor Swift" className="input input-bordered w-full" />
-            {!!errors.artist?.message && (
-              <label className="label">
-                <span className="label-text-alt">{errors.artist?.message}</span>
-              </label>
-            )}
+            <label className="label">
+              {!!errors.artist?.message && (
+                <span className="label-text-alt text-error">{errors.artist?.message}</span>
+              )}
+            </label>
           </div>
 
           <div className="form-control w-full">
@@ -68,11 +70,13 @@ export function CreateArtistPage() {
             </label>
             <label className="input-group">
               <span>$</span>
-              <input {...register("rate")} placeholder="0.25" className="input input-bordered w-full" />
+              <input {...register("rate", {
+                valueAsNumber: true,
+              })} placeholder="0.25" className="input input-bordered w-full" />
             </label>
             {!!errors.rate?.message && (
               <label className="label">
-                <span className="label-text-alt">{errors.rate?.message}</span>
+                <span className="label-text-alt text-error">{errors.rate?.message}</span>
               </label>
             )}
           </div>
@@ -81,10 +85,12 @@ export function CreateArtistPage() {
             <label className="label">
               <span className="label-text"># of Streams</span>
             </label>
-            <input {...register("streams")} placeholder="1000" className="input input-bordered w-full" />
+            <input {...register("streams", {
+              valueAsNumber: true,
+            })} placeholder="1000" className="input input-bordered w-full" />
             {!!errors.streams?.message && (
               <label className="label">
-                <span className="label-text-alt">{errors.streams?.message}</span>
+                <span className="label-text-alt text-error">{errors.streams?.message}</span>
               </label>
             )}
           </div>

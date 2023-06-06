@@ -4,7 +4,7 @@ type LayoutProps = {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <main className="container mx-auto my-10">
+    <main className="container mx-auto my-20">
       {children}
     </main>
   )
