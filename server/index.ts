@@ -23,6 +23,16 @@ app.get('/api/artists', async (_: Request, res: Response) => {
   res.send(artists);
 });
 
+app.get('/api/artists/:id', async (req: Request, res: Response) => {
+  const artist = await Artist.findById(req.params.id);
+
+  if (artist) {
+    res.send(artist);
+  } else {
+    res.status(404).send({ message: 'Artist not found' });
+  }
+});
+
 app.patch('/api/artists/:id/isCompletelyPaid', async (req: Request, res: Response) => {
   const artist = await Artist.findById(req.params.id);
   if (artist) {

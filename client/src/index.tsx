@@ -4,12 +4,27 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { UpdateArtistPage } from './pages/artist/update';
 
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />
+  },
+  {
+    path: "/artists/:id",
+    element: <UpdateArtistPage />
+  }
+])
+
+
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>

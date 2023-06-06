@@ -3,14 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatToCAD } from './utils/currency';
-
-type Artist = {
-  _id: string;
-  artist: string;
-  rate: number;
-  streams: number;
-  isCompletelyPaid: boolean;
-}
+import { Link } from 'react-router-dom';
+import { Artist } from './types/artist';
 
 function App() {
   const queryClient = useQueryClient();
@@ -43,6 +37,7 @@ function App() {
                 <th>Streams</th>
                 <th>Payout</th>
                 <th>Completed Payout?</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -54,6 +49,9 @@ function App() {
                   <td>{formatToCAD(artist.streams * artist.rate)}</td>
                   <td>
                     <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
+                  </td>
+                  <td className="artist__actions">
+                    <Link to={`/artists/${artist._id}`}>Update</Link>
                   </td>
                 </tr>
               ))}
