@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon ./index.ts",
     "prod": "node dist/index.js",
-    "build": "npx tsc -p ."
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
