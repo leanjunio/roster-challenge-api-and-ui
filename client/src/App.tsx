@@ -41,8 +41,8 @@ function App() {
       <Text fontSize="3xl">Artists</Text>
       {isLoading && <p>Loading...</p>}
       {isSuccess && (
-        <main>
-          <Table>
+        <TableContainer>
+          <Table variant="simple">
             <Thead>
               <Tr>
                 <Th>Artist Name</Th>
@@ -71,7 +71,7 @@ function App() {
               ))}
             </Tbody>
           </Table>
-        </main>
+        </TableContainer>
       )}
     </Layout>
   );
