@@ -45,6 +45,17 @@ app.post('/api/artists', async (req: Request, res: Response) => {
   res.send(newArtist);
 });
 
+app.delete('/api/artists/:id', async (req: Request, res: Response) => {
+  const artist = await Artist.findById(req.params.id);
+
+  if (artist) {
+    await artist.deleteOne();
+    res.send({ message: 'Artist removed' });
+  } else {
+    res.status(404).send({ message: 'Artist not found' });
+  }
+});
+
 app.patch('/api/artists/:id/isCompletelyPaid', async (req: Request, res: Response) => {
   const artist = await Artist.findById(req.params.id);
   if (artist) {
