@@ -57,7 +57,7 @@ function App() {
                     <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
                   </td>
                   <td className="artist__actions">
-                    <Link to={`/artists/${artist._id}`}>Update</Link>
+                    <button className="btn">Update</button>
                     <button className="artist__delete" onClick={() => handleCompletedPayoutChange(artist._id)}>Delete</button>
                   </td>
                 </tr>
