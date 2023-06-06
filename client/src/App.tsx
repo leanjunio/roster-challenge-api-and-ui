@@ -6,20 +6,6 @@ import { formatToCAD } from './utils/currency';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Layout } from './components/Layout/Layout';
 import { Artist } from './types/artist';
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Text,
-  Button,
-  Link
-} from '@chakra-ui/react'
 
 function App() {
   const navigate = useNavigate();
@@ -45,44 +31,40 @@ function App() {
 
   return (
     <Layout>
-      <Text fontSize="3xl">Artists</Text>
+      <h1>Artists</h1>
       {isLoading && <p>Loading...</p>}
       {isSuccess && (
-        <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Artist Name</Th>
-                <Th>Rate</Th>
-                <Th>Streams</Th>
-                <Th>Payout</Th>
-                <Th>Completed Payout?</Th>
-                <Th>Actions</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
+        <main>
+          <table>
+            <thead>
+              <tr>
+                <th>Artist Name</th>
+                <th>Rate</th>
+                <th>Streams</th>
+                <th>Payout</th>
+                <th>Completed Payout?</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
               {data.map(artist => (
-                <Tr key={artist._id}>
-                  <Td>{artist.artist}</Td>
-                  <Td>{artist.rate}</Td>
-                  <Td>{artist.streams}</Td>
-                  <Td>{formatToCAD(artist.streams * artist.rate)}</Td>
-                  <Td>
+                <tr key={artist._id}>
+                  <td>{artist.artist}</td>
+                  <td>{artist.rate}</td>
+                  <td>{artist.streams}</td>
+                  <td>{formatToCAD(artist.streams * artist.rate)}</td>
+                  <td>
                     <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
-                  </Td>
-                  <Td className="artist__actions">
-                    <Button onClick={() => onUpdateArtistClick(artist._id)} colorScheme='teal' variant='solid'>
-                      Update
-                    </Button>
-                    <Button colorScheme='red' variant='solid'>
-                      Delete
-                    </Button>
-                  </Td>
-                </Tr>
+                  </td>
+                  <td className="artist__actions">
+                    <Link to={`/artists/${artist._id}`}>Update</Link>
+                    <button className="artist__delete" onClick={() => handleCompletedPayoutChange(artist._id)}>Delete</button>
+                  </td>
+                </tr>
               ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+            </tbody>
+          </table>
+        </main>
       )}
     </Layout>
   );

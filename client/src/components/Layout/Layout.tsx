@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react";
+import "./Layout.css"
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -7,9 +7,7 @@ type LayoutProps = {
 export function Layout({ children }: LayoutProps) {
   return (
     <main>
-      <Container maxW="max">
-        {children}
-      </Container>
+      {children}
     </main>
   )
 }
