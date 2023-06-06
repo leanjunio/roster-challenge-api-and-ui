@@ -29,6 +29,8 @@ function App() {
                 <th>Artist Name</th>
                 <th>Rate</th>
                 <th>Streams</th>
+                <th>Payout</th>
+                <th>Completed Payout?</th>
               </tr>
             </thead>
             <tbody>
@@ -38,6 +40,9 @@ function App() {
                   <td>{artist.rate}</td>
                   <td>{artist.streams}</td>
                   <td>{formatToCAD(artist.streams * artist.rate)}</td>
+                  <td>
+                    <input type="checkbox" id="completedPayout" name="completedPayout" />
+                  </td>
                 </tr>
               ))}
             </tbody>
