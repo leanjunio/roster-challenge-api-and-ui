@@ -1,9 +1,6 @@
-import React, { useRef } from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatToCAD } from './utils/currency';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Layout } from './components/Layout/Layout';
 import { Artist } from './types/artist';
