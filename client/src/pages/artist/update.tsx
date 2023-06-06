@@ -102,6 +102,7 @@ export function UpdateArtistPage() {
               <span>$</span>
               <input {...register("rate", {
                 value: data.rate,
+                valueAsNumber: true
               })} placeholder="0.25" className="input input-bordered w-full" />
             </label>
             {!!errors.rate?.message && (
@@ -118,6 +119,7 @@ export function UpdateArtistPage() {
             </label>
             <input {...register("streams", {
               value: data.streams,
+              valueAsNumber: true
             })} placeholder="1000" className="input input-bordered w-full" />
             {!!errors.streams?.message && (
               <label className="label">

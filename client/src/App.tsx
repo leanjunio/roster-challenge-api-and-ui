@@ -75,7 +75,7 @@ function App() {
               <th>Rate</th>
               <th>Streams</th>
               <th>Total Payout</th>
-              <th>Monthly Payout</th>
+              <th>Avg. Monthly Payout</th>
               <th>Completed Payout?</th>
               <th>Actions</th>
             </tr>
