@@ -21,7 +21,7 @@ Your minimum application requirements include:
 - A hosted MVC structure with separate front and back ends
 - Displaying the list in a web browser [x]
 - Extending the list to include the calculated payout amount per artist [x]
-- CRUD services for artists and rates
+- CRUD services for artists and rates [x]
 - Adding a field to toggle (and persist) whether the artist payout is complete (eg: checkbox) [x]
 - Display is sorted in descending order by payout amount
 

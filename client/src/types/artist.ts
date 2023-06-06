@@ -3,5 +3,6 @@ export type Artist = {
   artist: string;
   rate: number;
   streams: number;
+  payout: number;
   isCompletelyPaid: boolean;
 }

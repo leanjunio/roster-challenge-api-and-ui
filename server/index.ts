@@ -20,7 +20,8 @@ app.get('/health', (_: Request, res: Response) => {
 
 app.get('/api/artists', async (_: Request, res: Response) => {
   const artists = await Artist.find({});
-  res.send(artists);
+  const sortedArtists = artists.map(artist => ({ ...artist.toJSON(), payout: artist.rate * artist.streams })).sort((artistA, artistB) => artistB.payout - artistA.payout);
+  res.send(sortedArtists);
 });
 
 app.get('/api/artists/:id', async (req: Request, res: Response) => {

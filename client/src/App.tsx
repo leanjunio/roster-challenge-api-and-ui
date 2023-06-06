@@ -76,7 +76,7 @@ function App() {
                   <td>{artist.artist}</td>
                   <td>{artist.rate}</td>
                   <td>{artist.streams}</td>
-                  <td>{formatToCAD(artist.streams * artist.rate)}</td>
+                  <td>{formatToCAD(artist.payout)}</td>
                   <td>
                     <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
                   </td>
