@@ -10,6 +10,11 @@ type Artist = {
   streams: number;
 }
 
+const formatter = new Intl.NumberFormat('en-CA', {
+  style: 'currency',
+  currency: 'CAD',
+});
+
 function App() {
   const { isLoading, isSuccess, error, data } = useQuery<Artist[]>({
     queryKey: ['artists'],
@@ -36,6 +41,7 @@ function App() {
                   <td>{artist.artist}</td>
                   <td>{artist.rate}</td>
                   <td>{artist.streams}</td>
+                  <td>{formatter.format(artist.streams * artist.rate)}</td>
                 </tr>
               ))}
             </tbody>
