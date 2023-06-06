@@ -95,7 +95,7 @@ export function CreateArtistPage() {
           </div>
           <div className="flex gap-2">
             <button className="btn" type="submit">Submit</button>
-            <button className="btn btn-outline btn-error" type="button">Cancel</button>
+            <button className="btn btn-outline btn-error" type="button" onClick={() => navigate("/")}>Cancel</button>
           </div>
         </form>
       </div>

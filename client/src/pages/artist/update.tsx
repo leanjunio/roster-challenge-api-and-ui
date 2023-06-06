@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout/Layout";
 import { Artist } from "../../types/artist";
 import { useForm } from "react-hook-form";
@@ -15,6 +15,7 @@ const updateArtistSchema = z.object({
 type UpdateArtistForm = z.infer<typeof updateArtistSchema>;
 
 export function UpdateArtistPage() {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, isSuccess } = useQuery<Artist>({
     queryKey: ['artist', id],
@@ -97,7 +98,7 @@ export function UpdateArtistPage() {
               </div>
               <div className="flex gap-2">
                 <button className="btn" type="submit">Submit</button>
-                <button className="btn btn-outline btn-error" type="button">Cancel</button>
+                <button className="btn btn-outline btn-error" type="button" onClick={() => navigate("/")}>Cancel</button>
               </div>
             </form>
           </div>
