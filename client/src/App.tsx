@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatToCAD } from './utils/currency';
 
 type Artist = {
@@ -9,13 +9,25 @@ type Artist = {
   artist: string;
   rate: number;
   streams: number;
+  isCompletelyPaid: boolean;
 }
 
 function App() {
+  const queryClient = useQueryClient();
   const { isLoading, isSuccess, error, data } = useQuery<Artist[]>({
     queryKey: ['artists'],
     queryFn: () => fetch(`${process.env.REACT_APP_API_URL}/artists`).then(res => res.json())
   });
+
+  const mutation = useMutation({
+    mutationFn: (id: Artist["_id"]) => fetch(`${process.env.REACT_APP_API_URL}/artists/${id}/isCompletelyPaid`, { method: 'PATCH' }).then(res => res.json())
+  });
+
+  function handleCompletedPayoutChange(id: Artist["_id"]) {
+    mutation.mutate(id, {
+      onSuccess: () => queryClient.invalidateQueries(['artists'])
+    });
+  }
 
   return (
     <div className="App">
@@ -41,7 +53,7 @@ function App() {
                   <td>{artist.streams}</td>
                   <td>{formatToCAD(artist.streams * artist.rate)}</td>
                   <td>
-                    <input type="checkbox" id="completedPayout" name="completedPayout" />
+                    <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
                   </td>
                 </tr>
               ))}
