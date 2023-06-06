@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Layout } from "../../components/Layout/Layout";
 import { Artist } from "../../types/artist";
 import { useForm } from "react-hook-form";
@@ -8,7 +9,7 @@ import { z } from "zod";
 
 const updateArtistSchema = z.object({
   artist: z.string().min(1).max(255),
-  rate: z.number().min(1).max(5),
+  rate: z.number().min(0.0000000001).max(5),
   streams: z.number().min(0),
   isCompletelyPaid: z.boolean(),
 });
@@ -25,7 +26,9 @@ export function UpdateArtistPage() {
     enabled: !!id
   });
 
-  const { register, handleSubmit, formState: { errors } } = useForm<UpdateArtistFormData>();
+  const { register, handleSubmit, formState: { errors } } = useForm<UpdateArtistFormData>({
+    resolver: zodResolver(updateArtistSchema)
+  });
 
   const updateMutation = useMutation({
     mutationFn: (data: UpdateArtistFormData) => fetch(`${process.env.REACT_APP_API_URL}/artists/${id}`, {
@@ -84,12 +87,12 @@ export function UpdateArtistPage() {
                   <input {...register("rate", {
                     value: data.rate,
                   })} placeholder="0.25" className="input input-bordered w-full" />
-                  {!!errors.rate?.message && (
-                    <label className="label">
-                      <span className="label-text-alt">{errors.rate?.message}</span>
-                    </label>
-                  )}
                 </label>
+                {!!errors.rate?.message && (
+                  <label className="label">
+                    <span className="label-text-alt">{errors.rate?.message}</span>
+                  </label>
+                )}
 
               </div>
 

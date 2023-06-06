@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { Layout } from "../../components/Layout/Layout";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { toast } from "react-hot-toast";
 import { Artist } from "../../types/artist";
@@ -8,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const createArtistSchema = z.object({
   artist: z.string().min(1).max(255),
-  rate: z.number().min(1).max(5),
+  rate: z.number().min(0.0000000001).max(5),
   streams: z.number().min(0),
   isCompletelyPaid: z.boolean(),
 });
@@ -17,7 +18,9 @@ type CreateArtistFormData = z.infer<typeof createArtistSchema>;
 
 export function CreateArtistPage() {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<CreateArtistFormData>();
+  const { register, handleSubmit, formState: { errors } } = useForm<CreateArtistFormData>({
+    resolver: zodResolver(createArtistSchema)
+  });
 
   const mutation = useMutation({
     onSuccess: (data: Artist) => {
@@ -66,13 +69,12 @@ export function CreateArtistPage() {
             <label className="input-group">
               <span>$</span>
               <input {...register("rate")} placeholder="0.25" className="input input-bordered w-full" />
-              {!!errors.rate?.message && (
-                <label className="label">
-                  <span className="label-text-alt">{errors.rate?.message}</span>
-                </label>
-              )}
             </label>
-
+            {!!errors.rate?.message && (
+              <label className="label">
+                <span className="label-text-alt">{errors.rate?.message}</span>
+              </label>
+            )}
           </div>
 
           <div className="form-control w-full">
