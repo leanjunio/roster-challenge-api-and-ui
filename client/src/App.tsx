@@ -4,6 +4,7 @@ import './App.css';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatToCAD } from './utils/currency';
 import { Link } from 'react-router-dom';
+import { Layout } from './components/Layout/Layout';
 import { Artist } from './types/artist';
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <Layout>
       <h1>Artists</h1>
       {isLoading && <p>Loading...</p>}
       {isSuccess && (
@@ -52,6 +53,7 @@ function App() {
                   </td>
                   <td className="artist__actions">
                     <Link to={`/artists/${artist._id}`}>Update</Link>
+                    <button className="artist__delete" onClick={() => handleCompletedPayoutChange(artist._id)}>Delete</button>
                   </td>
                 </tr>
               ))}
@@ -59,7 +61,7 @@ function App() {
           </table>
         </main>
       )}
-    </div>
+    </Layout>
   );
 }
 

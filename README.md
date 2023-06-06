@@ -19,8 +19,8 @@ You receive the data in the form of a [json file](./roster.json) containing an a
 Your minimum application requirements include:
 
 - A hosted MVC structure with separate front and back ends
-- Displaying the list in a web browser
-- Extending the list to include the calculated payout amount per artist
+- Displaying the list in a web browser [x]
+- Extending the list to include the calculated payout amount per artist [x]
 - CRUD services for artists and rates
 - Adding a field to toggle (and persist) whether the artist payout is complete (eg: checkbox)
 - Display is sorted in descending order by payout amount
@@ -40,7 +40,7 @@ eg:
 - API: RESTful or GraphQL
 - Backend: .NET, Node.js, PHP, etc...
 - Storage: S3, DB(SQL/NoSQL), etc...
-- Infrastructure: Docker, Serverless, Heroku, etc..
+- Infrastructure: Docker, Serverless, Heroku, etc.. 
 
 ---
 
