@@ -89,6 +89,10 @@ npm start
 
 Navigate to `localhost:3000` to view the artist page
 
+### Links
+
+Render Backend URL: https://rebel-api-0x0n.onrender.com/
+
 ### Chosen considerations
 
 I decided to opt for a MERN stack since that's where my comfort and familiarity lies.
