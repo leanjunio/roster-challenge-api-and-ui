@@ -5,7 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { UpdateArtistPage } from './pages/artist/update';
+import { CreateArtistPage } from './pages/artist/create';
 
 const queryClient = new QueryClient();
 
@@ -19,15 +21,21 @@ const router = createBrowserRouter([
     element: <App />
   },
   {
+    path: "/artists/",
+    element: <CreateArtistPage />
+  },
+  {
     path: "/artists/:id",
     element: <UpdateArtistPage />
-  }
+  },
+
 ])
 
 
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <Toaster />
       <RouterProvider router={router} />
     </QueryClientProvider>
   </React.StrictMode>

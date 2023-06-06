@@ -29,7 +29,12 @@ export function UpdateArtistPage() {
   }
 
   return (
-    <Layout title="Update Artist">
+    <Layout>
+      <div className="flex flex-row justify-between my-10">
+        <article className="prose">
+          <h1>Update Artists</h1>
+        </article>
+      </div>
       {isLoading && <p>Loading...</p>}
       {isSuccess && (
         <>

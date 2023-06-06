@@ -29,8 +29,18 @@ function App() {
     navigate(`/artists/${id}`);
   }
 
+  function onAddArtistClick() {
+    navigate(`/artists/`);
+  }
+
   return (
-    <Layout title="Artists">
+    <Layout>
+      <div className="flex flex-row justify-between my-10">
+        <article className="prose">
+          <h1>Artists</h1>
+        </article>
+        <button onClick={() => onAddArtistClick()} className="btn btn-accent btn-md">Add Artist</button>
+      </div>
       {isLoading && <p>Loading...</p>}
       {isSuccess && (
         <main>
