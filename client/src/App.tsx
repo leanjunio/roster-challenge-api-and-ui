@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { useQuery } from '@tanstack/react-query';
+import { formatToCAD } from './utils/currency';
 
 type Artist = {
   _id: string;
@@ -9,11 +10,6 @@ type Artist = {
   rate: number;
   streams: number;
 }
-
-const formatter = new Intl.NumberFormat('en-CA', {
-  style: 'currency',
-  currency: 'CAD',
-});
 
 function App() {
   const { isLoading, isSuccess, error, data } = useQuery<Artist[]>({
@@ -41,7 +37,7 @@ function App() {
                   <td>{artist.artist}</td>
                   <td>{artist.rate}</td>
                   <td>{artist.streams}</td>
-                  <td>{formatter.format(artist.streams * artist.rate)}</td>
+                  <td>{formatToCAD(artist.streams * artist.rate)}</td>
                 </tr>
               ))}
             </tbody>
