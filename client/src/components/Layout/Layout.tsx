@@ -7,7 +7,7 @@ type LayoutProps = {
 export function Layout({ children }: LayoutProps) {
   return (
     <main>
-      <Container maxW="min">
+      <Container maxW="max">
         {children}
       </Container>
     </main>
