@@ -23,7 +23,7 @@ Your minimum application requirements include:
 - Extending the list to include the calculated payout amount per artist [x]
 - CRUD services for artists and rates [x]
 - Adding a field to toggle (and persist) whether the artist payout is complete (eg: checkbox) [x]
-- Display is sorted in descending order by payout amount
+- Display is sorted in descending order by payout amount [x]
 
 Bonus
 - This data feed is, as it turns out, all-time cumulative streams. The artists get paid monthly. Add a column showing average payout per month. Assumptions: rate of streams per month is constant, for artists that predate streaming, assume streaming started with Spotify launch in April 2006.
