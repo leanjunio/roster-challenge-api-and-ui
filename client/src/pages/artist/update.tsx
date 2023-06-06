@@ -29,34 +29,73 @@ export function UpdateArtistPage() {
   }
 
   return (
-    <Layout>
+    <Layout title="Update Artist">
       {isLoading && <p>Loading...</p>}
       {isSuccess && (
         <>
-          <h1>Updating {data.artist} record</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* <FormControl isInvalid={!!errors.artist?.message}>
-              <FormLabel htmlFor="artist">Artist Name</FormLabel>
-              <Input {...register("artist")} type="text" defaultValue={data.artist} />
-              {!!errors.artist?.message && <FormErrorMessage>{!!errors.artist?.message}</FormErrorMessage>}
-            </FormControl>
-            <FormControl isInvalid={!!errors.rate?.message}>
-              <FormLabel htmlFor="rate">Rate</FormLabel>
-              <Input {...register("rate")} type="number" defaultValue={data.rate} />
-              {!!errors.rate?.message && <FormErrorMessage>{!!errors.rate?.message}</FormErrorMessage>}
-            </FormControl>
-            <FormControl isInvalid={!!errors.streams?.message}>
-              <FormLabel htmlFor="strams">Streams</FormLabel>
-              <Input {...register("streams")} type="number" defaultValue={data.streams} />
-              {!!errors.streams?.message && <FormErrorMessage>{!!errors.streams?.message}</FormErrorMessage>}
-            </FormControl>
-            <FormControl isInvalid={!!errors.streams?.message}>
-              <FormLabel htmlFor="strams">Streams</FormLabel>
-              <Checkbox {...register("isCompletelyPaid")} type="checkbox" defaultChecked={data.isCompletelyPaid} />
-              {!!errors.streams?.message && <FormErrorMessage>{!!errors.streams?.message}</FormErrorMessage>}
-            </FormControl> */}
-            <button className="btn" type="submit" >Submit</button>
-          </form>
+          <div className="max-w-lg mx-auto">
+            <h1 className="text-2xl my-10">Updating {data.artist} record</h1>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text">Artist Name</span>
+                </label>
+                <input {...register("artist", {
+                  value: data.artist,
+                })} type="text" placeholder="Taylor Swift" className="input input-bordered w-full" />
+                {!!errors.artist?.message && (
+                  <label className="label">
+                    <span className="label-text-alt">{errors.artist?.message}</span>
+                  </label>
+                )}
+              </div>
+
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text">Artist Rate</span>
+                </label>
+                <label className="input-group">
+                  <span>$</span>
+                  <input {...register("rate", {
+                    value: data.rate,
+                  })} placeholder="0.25" className="input input-bordered w-full" />
+                  {!!errors.rate?.message && (
+                    <label className="label">
+                      <span className="label-text-alt">{errors.rate?.message}</span>
+                    </label>
+                  )}
+                </label>
+
+              </div>
+
+              <div className="form-control w-full">
+                <label className="label">
+                  <span className="label-text"># of Streams</span>
+                </label>
+                <input {...register("streams", {
+                  value: data.streams,
+                })} placeholder="1000" className="input input-bordered w-full" />
+                {!!errors.streams?.message && (
+                  <label className="label">
+                    <span className="label-text-alt">{errors.streams?.message}</span>
+                  </label>
+                )}
+              </div>
+
+              <div className="form-control">
+                <label className="label cursor-pointer">
+                  <span className="label-text">Is Completely Paid</span>
+                  <input {...register("isCompletelyPaid", {
+                    value: data.isCompletelyPaid,
+                  })} type="checkbox" defaultChecked={data.isCompletelyPaid} className="checkbox" />
+                </label>
+              </div>
+              <div className="flex gap-2">
+                <button className="btn" type="submit">Submit</button>
+                <button className="btn btn-outline btn-error" type="button">Cancel</button>
+              </div>
+            </form>
+          </div>
         </>
       )}
     </Layout>

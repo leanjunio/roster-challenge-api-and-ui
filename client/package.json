@@ -46,8 +46,11 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "@tanstack/eslint-plugin-query": "^4.29.9",
-    "@types/testing-library__jest-dom": "^5.14.6"
+    "@types/testing-library__jest-dom": "^5.14.6",
+    "daisyui": "^3.0.3",
+    "tailwindcss": "^3.3.2"
   },
   "proxy": "http://localhost:8080/"
 }

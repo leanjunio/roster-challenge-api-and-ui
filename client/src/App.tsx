@@ -30,12 +30,11 @@ function App() {
   }
 
   return (
-    <Layout>
-      <h1>Artists</h1>
+    <Layout title="Artists">
       {isLoading && <p>Loading...</p>}
       {isSuccess && (
         <main>
-          <table>
+          <table className='table'>
             <thead>
               <tr>
                 <th>Artist Name</th>
@@ -56,9 +55,9 @@ function App() {
                   <td>
                     <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
                   </td>
-                  <td className="artist__actions">
-                    <button className="btn">Update</button>
-                    <button className="artist__delete" onClick={() => handleCompletedPayoutChange(artist._id)}>Delete</button>
+                  <td className="flex gap-2">
+                    <button className="btn btn-sm" onClick={() => onUpdateArtistClick(artist._id)}>Update</button>
+                    <button className="btn btn-sm btn-error" onClick={() => handleCompletedPayoutChange(artist._id)}>Delete</button>
                   </td>
                 </tr>
               ))}
