@@ -26,7 +26,7 @@ Your minimum application requirements include:
 - Display is sorted in descending order by payout amount [x]
 
 Bonus
-- This data feed is, as it turns out, all-time cumulative streams. The artists get paid monthly. Add a column showing average payout per month. Assumptions: rate of streams per month is constant, for artists that predate streaming, assume streaming started with Spotify launch in April 2006.
+- This data feed is, as it turns out, all-time cumulative streams. The artists get paid monthly. Add a column showing average payout per month. Assumptions: rate of streams per month is constant, for artists that predate streaming, assume streaming started with Spotify launch in April 2006. [x]
 
 ---
 
@@ -73,7 +73,7 @@ For example:
 
 ## Instructions
 
-The backend is connected to a serverless mongodb instance on atlas. The uri is stored in a .env file.
+NOTE: The backend is connected to a serverless mongodb instance on atlas. The uri is stored in a .env file.
 
 Run the client and server separately
 
@@ -88,4 +88,8 @@ npm start
 ```
 
 Navigate to `localhost:3000` to view the artist page
+
+### Chosen considerations
+
+I decided to opt for a MERN stack since that's where my comfort and familiarity lies.
 
