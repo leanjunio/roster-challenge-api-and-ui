@@ -26,7 +26,6 @@ ArtistRoutes.get('/', async (_: Request, res: Response) => {
  */
 ArtistRoutes.get('/:id', async (req: Request, res: Response) => {
   const artist = await Artist.findById(req.params.id);
-  console.log({ artist })
 
   if (artist) {
     res.send(artist);

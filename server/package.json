@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/node": "^7.54.0",
     "@types/mongoose": "^5.11.97",
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",

@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import { connectDB } from './config/db';
-import { Artist } from './models/artist';
+import * as Sentry from "@sentry/node";
 import dotenv from 'dotenv';
 import csv from "csv-parser"
 import fs from "fs";
@@ -9,8 +9,32 @@ import { ArtistRoutes } from './routes/artists';
 
 dotenv.config();
 
-const app: Express = express();
 const port = process.env.PORT;
+
+const app: Express = express();
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Sentry.Integrations.Express({ app }),
+    // Automatically instrument Node.js libraries and frameworks
+    ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
+  ],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
+// RequestHandler creates a separate execution context, so that all
+// transactions/spans/breadcrumbs are isolated across requests
+app.use(Sentry.Handlers.requestHandler());
+// TracingHandler creates a trace for every incoming request
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(express.json());
 app.use(cors());
@@ -35,6 +59,9 @@ app.get('/health', (_: Request, res: Response) => {
 });
 
 app.use('/api/artists', ArtistRoutes);
+
+// The error handler must be before any other error middleware and after all controllers
+app.use(Sentry.Handlers.errorHandler());
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
