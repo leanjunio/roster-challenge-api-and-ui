@@ -17,10 +17,7 @@ app.use(cors());
 connectDB();
 
 type ArtistLookup = {
-  [key: string]: {
-    Genre: string;
-    Decade: string;
-  };
+  [key: string]: number;
 }
 
 let artistLookup: ArtistLookup = {};
@@ -37,8 +34,14 @@ app.get('/health', (_: Request, res: Response) => {
 });
 
 app.get('/api/artists', async (_: Request, res: Response) => {
+  const SPOTIFY_CUTOFF_YEAR = 2006;
   const artists = await Artist.find({});
-  const sortedArtists = artists.map(artist => ({ ...artist.toJSON(), payout: artist.rate * artist.streams })).sort((artistA, artistB) => artistB.payout - artistA.payout);
+  const sortedArtists = artists.map(artist => {
+    const totalPayout = artist.rate * artist.streams;
+    const monthsStreamed = artistLookup[artist.artist] < SPOTIFY_CUTOFF_YEAR ? new Date().getFullYear() - SPOTIFY_CUTOFF_YEAR : new Date().getFullYear() - artistLookup[artist.artist];
+    const artistWithPayout = { ...artist.toJSON(), payout: totalPayout, monthlyPayout: totalPayout / monthsStreamed };
+    return artistWithPayout;
+  }).sort((artistA, artistB) => artistB.payout - artistA.payout);
   res.send(sortedArtists);
 });
 

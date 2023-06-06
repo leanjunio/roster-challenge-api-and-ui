@@ -4,5 +4,6 @@ export type Artist = {
   rate: number;
   streams: number;
   payout: number;
+  monthlyPayout: number;
   isCompletelyPaid: boolean;
 }
