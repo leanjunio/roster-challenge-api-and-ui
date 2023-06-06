@@ -6,6 +6,18 @@ import { formatToCAD } from './utils/currency';
 import { Link } from 'react-router-dom';
 import { Layout } from './components/Layout/Layout';
 import { Artist } from './types/artist';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  Text
+} from '@chakra-ui/react'
 
 function App() {
   const queryClient = useQueryClient();
@@ -26,39 +38,39 @@ function App() {
 
   return (
     <Layout>
-      <h1>Artists</h1>
+      <Text fontSize="3xl">Artists</Text>
       {isLoading && <p>Loading...</p>}
       {isSuccess && (
         <main>
-          <table>
-            <thead>
-              <tr>
-                <th>Artist Name</th>
-                <th>Rate</th>
-                <th>Streams</th>
-                <th>Payout</th>
-                <th>Completed Payout?</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Artist Name</Th>
+                <Th>Rate</Th>
+                <Th>Streams</Th>
+                <Th>Payout</Th>
+                <Th>Completed Payout?</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
               {data.map(artist => (
-                <tr key={artist._id}>
-                  <td>{artist.artist}</td>
-                  <td>{artist.rate}</td>
-                  <td>{artist.streams}</td>
-                  <td>{formatToCAD(artist.streams * artist.rate)}</td>
-                  <td>
+                <Tr key={artist._id}>
+                  <Td>{artist.artist}</Td>
+                  <Td>{artist.rate}</Td>
+                  <Td>{artist.streams}</Td>
+                  <Td>{formatToCAD(artist.streams * artist.rate)}</Td>
+                  <Td>
                     <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
-                  </td>
-                  <td className="artist__actions">
+                  </Td>
+                  <Td className="artist__actions">
                     <Link to={`/artists/${artist._id}`}>Update</Link>
                     <button className="artist__delete" onClick={() => handleCompletedPayoutChange(artist._id)}>Delete</button>
-                  </td>
-                </tr>
+                  </Td>
+                </Tr>
               ))}
-            </tbody>
-          </table>
+            </Tbody>
+          </Table>
         </main>
       )}
     </Layout>

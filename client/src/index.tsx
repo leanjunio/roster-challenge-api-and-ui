@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ChakraProvider } from '@chakra-ui/react';
 import { UpdateArtistPage } from './pages/artist/update';
 
 const queryClient = new QueryClient();
@@ -28,7 +29,9 @@ const router = createBrowserRouter([
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ChakraProvider>
+        <RouterProvider router={router} />
+      </ChakraProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );
