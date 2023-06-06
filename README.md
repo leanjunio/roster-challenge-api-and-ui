@@ -73,4 +73,19 @@ For example:
 
 ## Instructions
 
+The backend is connected to a serverless mongodb instance on atlas. The uri is stored in a .env file.
+
+Run the client and server separately
+
+```bash
+cd server
+npm start
+```
+
+```bash
+cd client
+npm start
+```
+
+Navigate to `localhost:3000` to view the artist page
 
