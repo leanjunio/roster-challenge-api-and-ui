@@ -1,8 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { Layout } from "../../components/Layout/Layout";
 import { Artist } from "../../types/artist";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
 
 const updateArtistSchema = z.object({
@@ -12,9 +13,10 @@ const updateArtistSchema = z.object({
   isCompletelyPaid: z.boolean(),
 });
 
-type UpdateArtistForm = z.infer<typeof updateArtistSchema>;
+type UpdateArtistFormData = z.infer<typeof updateArtistSchema>;
 
 export function UpdateArtistPage() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, isSuccess } = useQuery<Artist>({
@@ -23,10 +25,27 @@ export function UpdateArtistPage() {
     enabled: !!id
   });
 
-  const { register, handleSubmit, formState: { errors } } = useForm<UpdateArtistForm>();
+  const { register, handleSubmit, formState: { errors } } = useForm<UpdateArtistFormData>();
 
-  function onSubmit(data: UpdateArtistForm) {
-    console.log(data);
+  const updateMutation = useMutation({
+    mutationFn: (data: UpdateArtistFormData) => fetch(`${process.env.REACT_APP_API_URL}/artists/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+  });
+
+
+  function onSubmit(data: UpdateArtistFormData) {
+    updateMutation.mutate(data, {
+      onSuccess: () => {
+        toast.success(`Successfully updated ${data.artist}!`);
+        queryClient.invalidateQueries(['artists']);
+        navigate("/")
+      }
+    });
   }
 
   return (

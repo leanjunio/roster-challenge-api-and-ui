@@ -67,6 +67,17 @@ app.patch('/api/artists/:id/isCompletelyPaid', async (req: Request, res: Respons
   }
 });
 
+app.put('/api/artists/:id', async (req: Request, res: Response) => {
+  const artist = await Artist.findById(req.params.id);
+
+  if (artist) {
+    const updated = await Artist.replaceOne({ _id: req.params.id }, req.body);
+    res.send(updated);
+  } else {
+    res.status(404).send({ message: 'Artist not found' });
+  }
+});
+
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
