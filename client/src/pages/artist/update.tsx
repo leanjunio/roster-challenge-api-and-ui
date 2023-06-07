@@ -23,7 +23,7 @@ export function UpdateArtistPage() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { data, isLoading, isSuccess, isError, error } = useQuery<Artist>({
+  const { data, isLoading, isError, error } = useQuery<Artist>({
     queryKey: ['artists', { id }],
     queryFn: () => fetch(`${process.env.REACT_APP_API_URL}/artists/${id}`).then(res => res.json()),
     enabled: !!id

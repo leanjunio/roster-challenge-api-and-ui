@@ -1,13 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { formatToCAD } from '../utils/currency';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { Layout } from '../components/Layout/Layout';
 import { Artist } from '../types/artist';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Error } from "../components/Error";
-import { useRef, useState } from 'react';
-import { Checkbox } from '../components/inputs/Checkbox';
+import { useState } from 'react';
 import { Pagination } from '../types/pagination';
 import { ArtistTable, TablePagination } from './artist/table/ArtistTable';
 

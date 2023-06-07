@@ -1,8 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Artist } from "../../../types/artist";
 import { UpdateArtistFormData, updateArtistSchema } from "../update";
-import { useRef } from "react";
 import { Checkbox } from "../../../components/inputs/Checkbox";
 
 type UpdateArtistFormProps = {
@@ -13,15 +12,13 @@ type UpdateArtistFormProps = {
 
 export function UpdateArtistForm({ data, onSubmit, onCancel }: UpdateArtistFormProps) {
   console.log({ data })
-  const { register, handleSubmit, formState: { errors }, watch, setValue, reset } = useForm<UpdateArtistFormData>({
+  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<UpdateArtistFormData>({
     resolver: zodResolver(updateArtistSchema),
     defaultValues: data,
     shouldUnregister: true
   });
 
   const isCompletelyPaid = watch('isCompletelyPaid');
-
-  console.log({ isCompletelyPaid })
 
   function handleFormSubmit(data: UpdateArtistFormData) {
     onSubmit(data);
