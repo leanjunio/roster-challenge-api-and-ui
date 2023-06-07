@@ -4,26 +4,35 @@ import { artistLookup } from "..";
 
 export const ArtistRoutes = express.Router();
 
-const ITEMS_PER_PAGE = 20;
+const SPOTIFY_CUTOFF_YEAR = 2006;
+const ITEMS_PER_PAGE = 10;
 
 /**
  * @route GET /api/artists - Get all artists
  */
 ArtistRoutes.get('/', async (req: Request, res: Response) => {
-  const page = req.query.page || 1;
-
+  const page = Number(req.query.page ?? 0);
+  const size = Number(req.query.size ?? ITEMS_PER_PAGE);
   const query = {};
-  const skip = (page as number - 1) * ITEMS_PER_PAGE;
+  const skip = page * size;
   const count = await Artist.estimatedDocumentCount(query);
-  const pageCount = count / ITEMS_PER_PAGE;
-  const artists = await Artist.find(query).limit(ITEMS_PER_PAGE).skip(skip);
+  const pageCount = Math.ceil(count / size);
+  const artists = await Artist.find(query).limit(size).skip(skip);
+
+  const artistWithPayout = artists.map(artist => {
+    const totalPayout = artist.rate * artist.streams;
+    const yearsStreamed = artistLookup[artist.artist] < SPOTIFY_CUTOFF_YEAR ? new Date().getFullYear() - SPOTIFY_CUTOFF_YEAR : new Date().getFullYear() - artistLookup[artist.artist];
+    const monthsStreamed = yearsStreamed * 12;
+    const artistWithPayout = { ...artist.toJSON(), payout: totalPayout, monthlyPayout: totalPayout / monthsStreamed };
+    return artistWithPayout;
+  });
 
   res.json({
     pagination: {
       count,
       pageCount
     },
-    artists
+    artists: artistWithPayout
   });
 });
 

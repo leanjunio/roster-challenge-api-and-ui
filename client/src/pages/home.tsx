@@ -6,16 +6,29 @@ import { Layout } from '../components/Layout/Layout';
 import { Artist } from '../types/artist';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Error } from "../components/Error";
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Checkbox } from '../components/inputs/Checkbox';
+import { Pagination } from '../types/pagination';
+import { ArtistTable, TablePagination } from './artist/table/ArtistTable';
+
+type ArtistsQuery = {
+  pagination: Pagination;
+  artists: Artist[];
+}
 
 export function Home() {
-  const isPaidRef = useRef<HTMLInputElement>(null);
+  const [pagination, setPagination] =
+    useState<TablePagination>({
+      pageIndex: 0,
+      pageSize: 10
+    })
+
+  // const isPaidRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { isLoading, error, data, isError } = useQuery<Artist[]>({
-    queryKey: ['artists'],
-    queryFn: () => fetch(`${process.env.REACT_APP_API_URL}/artists`).then(res => res.json())
+  const { isLoading, error, data, isError } = useQuery<ArtistsQuery>({
+    queryKey: ['artists', pagination],
+    queryFn: () => fetch(`${process.env.REACT_APP_API_URL}/artists?page=${pagination.pageIndex}&size=${pagination.pageSize}`).then(res => res.json())
   });
 
   const mutation = useMutation({
@@ -29,7 +42,6 @@ export function Home() {
 
 
   function handleCompletedPayoutChange(artist: Artist) {
-    isPaidRef.current?.setAttribute("checked", (!artist.isCompletelyPaid).toString());
     mutation.mutate(artist._id, {
       onSuccess: () => {
         toast.success(`Payout status updated for ${artist.artist}`)
@@ -75,43 +87,16 @@ export function Home() {
         </article>
         <button onClick={() => onAddArtistClick()} className="btn btn-accent btn-md">Add Artist</button>
       </div>
-      <section className='overflow-x-auto h-4/5'>
-        <table className='table table-zebra table-pin-rows'>
-          <thead>
-            <tr>
-              <th className='text-lg'>Artist Name</th>
-              <th className='text-lg'>Rate</th>
-              <th className='text-lg'>Streams</th>
-              <th className='text-lg'>Total Payout</th>
-              <th className='text-lg'>Avg. Monthly Payout</th>
-              <th className='text-lg'>Completed Payout?</th>
-              <th className='text-lg'>Actions</th>
-            </tr>
-          </thead>
-          <tbody className='overflow-auto'>
-            {data.map(artist => (
-              <tr key={artist._id}>
-                <td>{artist.artist}</td>
-                <td>{artist.rate}</td>
-                <td>{artist.streams}</td>
-                <td>{formatToCAD(artist.payout)}</td>
-                <td>{formatToCAD(artist.monthlyPayout)}</td>
-                <td>
-                  <Checkbox
-                    value={artist.isCompletelyPaid}
-                    onChange={() => handleCompletedPayoutChange(artist)}
-                    name="completedPayout"
-                    id="completedPayout"
-                  />
-                </td>
-                <td className="flex gap-2">
-                  <button className="btn btn-sm btn-primary" onClick={() => onUpdateArtistClick(artist._id)}>Update</button>
-                  <button className="btn btn-sm btn-warning" onClick={() => handleDeleteArtist(artist._id, artist.artist)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <section className='min-h-fit'>
+        <ArtistTable
+          onToggleCompletedPayout={handleCompletedPayoutChange}
+          data={data.artists}
+          onUpdate={onUpdateArtistClick}
+          onDelete={handleDeleteArtist}
+          pagination={pagination}
+          updatePagination={setPagination}
+          serverPagination={data.pagination}
+        />
       </section>
     </Layout>
   );
