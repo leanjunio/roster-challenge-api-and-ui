@@ -30,7 +30,10 @@ export function ArtistTable({
   updatePagination,
   serverPagination
 }: ArtistTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([{
+    id: "payout",
+    desc: true
+  }]);
   const columnHelper = createColumnHelper<Artist>();
 
   const ColumnDefinitions: ColumnDef<Artist, any>[] = [
@@ -47,7 +50,7 @@ export function ArtistTable({
     columnHelper.accessor((row) => row.streams, {
       id: "streams",
       cell: (info) => <div>{info.getValue()}</div>,
-      header: () => <div>Rate</div>
+      header: () => <div>Streams</div>
     }),
     columnHelper.accessor((row) => row.payout, {
       id: "payout",
