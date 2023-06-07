@@ -25,9 +25,7 @@ export function Home() {
   });
 
 
-  function handleCompletedPayoutChange(id: Artist["_id"]) {
-    mutation.mutate(id, {
-      onSuccess: () => queryClient.invalidateQueries(['artists'])
+        queryClient.refetchQueries({ queryKey: ['artists', { id: artist._id }] })
     });
   }
 
