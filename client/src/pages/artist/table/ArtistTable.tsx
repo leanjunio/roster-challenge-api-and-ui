@@ -118,7 +118,7 @@ export function ArtistTable({
         <thead>
           {headers.map(header => {
             const direction = header.column.getIsSorted();
-            const sortIndicator = direction === "asc" ? "↑" : direction === "desc" ? "↓" : "";
+            const sortIndicator = direction === "asc" ? "▴" : direction === "desc" ? "▾" : "";
 
             return (
               <th key={header.id}>
