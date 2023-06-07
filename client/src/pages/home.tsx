@@ -67,7 +67,6 @@ export function Home() {
     )
   }
 
-  console.log(data.filter(artist => artist.artist === "liftufgy"))
   return (
     <Layout>
       <div className="flex flex-row justify-between my-10">
@@ -76,8 +75,8 @@ export function Home() {
         </article>
         <button onClick={() => onAddArtistClick()} className="btn btn-accent btn-md">Add Artist</button>
       </div>
-      <section>
-        <table className='table overflow-auto'>
+      <section className='overflow-x-auto h-4/5'>
+        <table className='table table-zebra table-pin-rows'>
           <thead>
             <tr>
               <th className='text-lg'>Artist Name</th>
@@ -106,8 +105,8 @@ export function Home() {
                   />
                 </td>
                 <td className="flex gap-2">
-                  <button className="btn btn-sm" onClick={() => onUpdateArtistClick(artist._id)}>Update</button>
-                  <button className="btn btn-sm btn-error" onClick={() => handleDeleteArtist(artist._id, artist.artist)}>Delete</button>
+                  <button className="btn btn-sm btn-primary" onClick={() => onUpdateArtistClick(artist._id)}>Update</button>
+                  <button className="btn btn-sm btn-warning" onClick={() => handleDeleteArtist(artist._id, artist.artist)}>Delete</button>
                 </td>
               </tr>
             ))}
