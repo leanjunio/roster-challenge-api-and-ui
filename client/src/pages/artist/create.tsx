@@ -11,8 +11,8 @@ const createArtistSchema = z.object({
   artist: z.string().min(1, { message: "Artist name is required" }),
   rate: z.number({
     required_error: "Required"
-  }).min(0.0000000001, { message: "Rate is required" }),
-  streams: z.number().min(0, { message: "Streams is required" }),
+  }).min(0.0000000001, { message: "Rate is required" }).max(5000, { message: "Exceeded max rate (5000)" }),
+  streams: z.number().min(0, { message: "Streams is required" }).max(10000000000, { message: "Exceeded max rate (10000000000)" }),
   isCompletelyPaid: z.boolean(),
 });
 
