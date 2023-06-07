@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Layout } from "../../components/Layout/Layout";
+import { Layout } from "../../../components/Layout/Layout";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { toast } from "react-hot-toast";
-import { Artist } from "../../types/artist";
+import { Artist } from "../../../types/artist";
 import { useNavigate } from "react-router-dom";
 
 const createArtistSchema = z.object({

@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Artist } from "../../../types/artist";
-import { UpdateArtistFormData, updateArtistSchema } from "../update";
+import { UpdateArtistFormData, updateArtistSchema } from "./UpdateArtistPage";
 import { Checkbox } from "../../../components/inputs/Checkbox";
 
 type UpdateArtistFormProps = {

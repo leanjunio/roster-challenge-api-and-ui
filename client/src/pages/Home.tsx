@@ -21,7 +21,6 @@ export function Home() {
       pageSize: 10
     })
 
-  // const isPaidRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isLoading, error, data, isError } = useQuery<ArtistsQuery>({

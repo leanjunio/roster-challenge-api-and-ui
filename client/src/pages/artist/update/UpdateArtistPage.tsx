@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { Layout } from "../../components/Layout/Layout";
-import { Artist } from "../../types/artist";
+import { Layout } from "../../../components/Layout/Layout";
+import { Artist } from "../../../types/artist";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
-import { Error } from "../../components/Error";
-import { LoadingSpinner } from "../../components/LoadingSpinner";
-import { UpdateArtistForm } from "./update/form";
+import { Error } from "../../../components/Error";
+import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import { UpdateArtistForm } from "./UpdateArtistForm";
 
 export const updateArtistSchema = z.object({
   artist: z.string().min(1, { message: "Artist name is required" }),
