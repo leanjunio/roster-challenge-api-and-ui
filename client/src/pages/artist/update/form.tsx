@@ -11,7 +11,6 @@ type UpdateArtistFormProps = {
 };
 
 export function UpdateArtistForm({ data, onSubmit, onCancel }: UpdateArtistFormProps) {
-  console.log({ data })
   const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<UpdateArtistFormData>({
     resolver: zodResolver(updateArtistSchema),
     defaultValues: data,
