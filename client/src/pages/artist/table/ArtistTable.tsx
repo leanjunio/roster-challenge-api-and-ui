@@ -90,8 +90,6 @@ export function ArtistTable({
     }),
   ]
 
-  console.log({ pagination })
-
   const table = useReactTable({
     columns: ColumnDefinitions,
     data,

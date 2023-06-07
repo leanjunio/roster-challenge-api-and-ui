@@ -1,10 +1,10 @@
 import { Table } from "@tanstack/react-table";
 
-type PaginationProps = {
-  table: Table<any>
+type PaginationProps<T> = {
+  table: Table<T>
 };
 
-export function Pagination({ table }: PaginationProps) {
+export function Pagination<T>({ table }: PaginationProps<T>) {
   const state = table.getState().pagination;
   const goLastPage = () => table.setPageIndex(table.getPageCount() - 1);
 
@@ -15,7 +15,7 @@ export function Pagination({ table }: PaginationProps) {
           {/* button to go to first page */}
           <button
             className="btn btn-sm"
-            onClick={() => table.setPageIndex(1)}
+            onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
             {"<<"}
