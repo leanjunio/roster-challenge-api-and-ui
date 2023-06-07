@@ -24,7 +24,7 @@ export function UpdateArtistForm({ data, onSubmit, onCancel }: UpdateArtistFormP
   }
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit, (e) => console.log({ e }))} className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-3">
       <div className="form-control w-full">
         <label className="label">
           <span className="label-text">Artist Name</span>
