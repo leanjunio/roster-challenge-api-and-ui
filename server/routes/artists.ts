@@ -13,7 +13,8 @@ ArtistRoutes.get('/', async (_: Request, res: Response) => {
 
   const sortedArtists = artists.map(artist => {
     const totalPayout = artist.rate * artist.streams;
-    const monthsStreamed = artistLookup[artist.artist] < SPOTIFY_CUTOFF_YEAR ? new Date().getFullYear() - SPOTIFY_CUTOFF_YEAR : new Date().getFullYear() - artistLookup[artist.artist];
+    const yearsStreamed = artistLookup[artist.artist] < SPOTIFY_CUTOFF_YEAR ? new Date().getFullYear() - SPOTIFY_CUTOFF_YEAR : new Date().getFullYear() - artistLookup[artist.artist];
+    const monthsStreamed = yearsStreamed * 12;
     const artistWithPayout = { ...artist.toJSON(), payout: totalPayout, monthlyPayout: totalPayout / monthsStreamed };
     return artistWithPayout;
   }).sort((artistA, artistB) => artistB.payout - artistA.payout);

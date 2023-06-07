@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Layout } from "../../components/Layout/Layout";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -20,6 +20,7 @@ type CreateArtistFormData = z.infer<typeof createArtistSchema>;
 
 export function CreateArtistPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { register, handleSubmit, formState: { errors } } = useForm<CreateArtistFormData>({
     resolver: zodResolver(createArtistSchema)
   });
@@ -27,6 +28,7 @@ export function CreateArtistPage() {
   const mutation = useMutation({
     onSuccess: (data: Artist) => {
       toast.success(`Successfully added ${data.artist}!`);
+      queryClient.invalidateQueries({ queryKey: ['artists'] });
       navigate("/");
     },
     mutationFn: (data: CreateArtistFormData) => fetch(`${process.env.REACT_APP_API_URL}/artists/`, {

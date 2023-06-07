@@ -6,8 +6,11 @@ import { Layout } from '../components/Layout/Layout';
 import { Artist } from '../types/artist';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Error } from "../components/Error";
+import { useRef } from 'react';
+import { Checkbox } from '../components/inputs/Checkbox';
 
 export function Home() {
+  const isPaidRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isLoading, error, data, isError } = useQuery<Artist[]>({
@@ -20,12 +23,19 @@ export function Home() {
   });
 
   const deleteMutation = useMutation({
-    onSuccess: () => queryClient.invalidateQueries(['artists']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['artists'] }),
     mutationFn: (id: Artist["_id"]) => fetch(`${process.env.REACT_APP_API_URL}/artists/${id}`, { method: 'DELETE' }).then(res => res.json())
   });
 
 
+  function handleCompletedPayoutChange(artist: Artist) {
+    isPaidRef.current?.setAttribute("checked", (!artist.isCompletelyPaid).toString());
+    mutation.mutate(artist._id, {
+      onSuccess: () => {
+        toast.success(`Payout status updated for ${artist.artist}`)
+        queryClient.invalidateQueries({ queryKey: ['artists'] })
         queryClient.refetchQueries({ queryKey: ['artists', { id: artist._id }] })
+      }
     });
   }
 
@@ -57,6 +67,7 @@ export function Home() {
     )
   }
 
+  console.log(data.filter(artist => artist.artist === "liftufgy"))
   return (
     <Layout>
       <div className="flex flex-row justify-between my-10">
@@ -66,19 +77,19 @@ export function Home() {
         <button onClick={() => onAddArtistClick()} className="btn btn-accent btn-md">Add Artist</button>
       </div>
       <section>
-        <table className='table'>
+        <table className='table overflow-auto'>
           <thead>
             <tr>
-              <th>Artist Name</th>
-              <th>Rate</th>
-              <th>Streams</th>
-              <th>Total Payout</th>
-              <th>Avg. Monthly Payout</th>
-              <th>Completed Payout?</th>
-              <th>Actions</th>
+              <th className='text-lg'>Artist Name</th>
+              <th className='text-lg'>Rate</th>
+              <th className='text-lg'>Streams</th>
+              <th className='text-lg'>Total Payout</th>
+              <th className='text-lg'>Avg. Monthly Payout</th>
+              <th className='text-lg'>Completed Payout?</th>
+              <th className='text-lg'>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='overflow-auto'>
             {data.map(artist => (
               <tr key={artist._id}>
                 <td>{artist.artist}</td>
@@ -87,7 +98,12 @@ export function Home() {
                 <td>{formatToCAD(artist.payout)}</td>
                 <td>{formatToCAD(artist.monthlyPayout)}</td>
                 <td>
-                  <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
+                  <Checkbox
+                    value={artist.isCompletelyPaid}
+                    onChange={() => handleCompletedPayoutChange(artist)}
+                    name="completedPayout"
+                    id="completedPayout"
+                  />
                 </td>
                 <td className="flex gap-2">
                   <button className="btn btn-sm" onClick={() => onUpdateArtistClick(artist._id)}>Update</button>

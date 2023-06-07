@@ -59,7 +59,7 @@ app.get('/health', (_: Request, res: Response) => {
   res.send('OK');
 });
 
-app.use('/api', limiter);
+// app.use('/api', limiter);
 app.use('/api/artists', ArtistRoutes);
 
 // The error handler must be before any other error middleware and after all controllers

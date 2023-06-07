@@ -20,14 +20,17 @@ function App() {
   });
 
   const deleteMutation = useMutation({
-    onSuccess: () => queryClient.invalidateQueries(['artists']),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['artists'] }),
     mutationFn: (id: Artist["_id"]) => fetch(`${process.env.REACT_APP_API_URL}/artists/${id}`, { method: 'DELETE' }).then(res => res.json())
   });
 
 
-  function handleCompletedPayoutChange(id: Artist["_id"]) {
+  function handleCompletedPayoutChange(id: Artist["_id"], artist: Artist["artist"]) {
     mutation.mutate(id, {
-      onSuccess: () => queryClient.invalidateQueries(['artists'])
+      onSuccess: () => {
+        toast.success(`Toggled payout for ${artist}!`);
+        queryClient.invalidateQueries({ queryKey: ['artists'] });
+      }
     });
   }
 
@@ -89,7 +92,7 @@ function App() {
                 <td>{formatToCAD(artist.payout)}</td>
                 <td>{formatToCAD(artist.monthlyPayout)}</td>
                 <td>
-                  <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id)} id="completedPayout" name="completedPayout" />
+                  <input type="checkbox" checked={artist.isCompletelyPaid} disabled={mutation.isLoading} onChange={() => handleCompletedPayoutChange(artist._id, artist.artist)} id="completedPayout" name="completedPayout" />
                 </td>
                 <td className="flex gap-2">
                   <button className="btn btn-sm" onClick={() => onUpdateArtistClick(artist._id)}>Update</button>
