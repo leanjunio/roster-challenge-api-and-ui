@@ -6,7 +6,6 @@ import { Artist, ArtistsQueryResponse } from '../types/artist';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { Error } from "../components/Error";
 import { useState } from 'react';
-import { Pagination } from '../types/pagination';
 import { ArtistTable, TablePagination } from './artist/table/ArtistTable';
 import { SortingState } from '@tanstack/react-table';
 
@@ -17,15 +16,15 @@ export function Home() {
       pageSize: 10
     });
   const [sorting, setSorting] = useState<SortingState>([{
-    id: "payout",
+    id: 'payout',
     desc: true
   }]);
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isLoading, error, data, isError } = useQuery<ArtistsQueryResponse>({
-    queryKey: ['artists', pagination],
-    queryFn: () => fetch(`${process.env.REACT_APP_API_URL}/artists?page=${pagination.pageIndex}&size=${pagination.pageSize}&sortBy=${sorting[0].id}&sortOrder=${sorting[0].desc ? 'desc' : 'asc'}`).then(res => res.json())
+    queryKey: ['artists', pagination, sorting],
+    queryFn: () => fetch(`${process.env.REACT_APP_API_URL}/artists?page=${pagination.pageIndex}&size=${pagination.pageSize}&sortBy=${sorting[0]?.id ?? "payout"}&sortOrder=${sorting[0]?.desc ? 'desc' : 'asc'}`).then(res => res.json())
   });
 
   const mutation = useMutation({
@@ -94,7 +93,6 @@ export function Home() {
           updatePagination={setPagination}
           updateSorting={setSorting}
           sorting={sorting}
-          serverPagination={data.pagination}
           pageCount={data.artists.totalPages}
           hasPrevPage={data.artists.hasPrevPage}
           hasNextPage={data.artists.hasNextPage}

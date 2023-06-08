@@ -1,10 +1,8 @@
-import { SortingState, flexRender, getCoreRowModel, getSortedRowModel, useReactTable, getPaginationRowModel, createColumnHelper, OnChangeFn } from "@tanstack/react-table";
-import { SetStateAction, useState } from "react";
-import { Artist, ArtistsQueryResponse } from "../../../types/artist";
+import { SortingState, flexRender, getCoreRowModel, getSortedRowModel, useReactTable, createColumnHelper, OnChangeFn } from "@tanstack/react-table";
+import { Artist } from "../../../types/artist";
 import { formatToCAD } from "../../../utils/currency";
 import { Checkbox } from "../../../components/inputs/Checkbox";
 import { Pagination } from "./Pagination";
-import type { Pagination as ServerPagination } from "../../../types/pagination";
 
 export type TablePagination = {
   pageIndex: number;
@@ -20,7 +18,6 @@ type ArtistTableProps = {
   updatePagination: OnChangeFn<TablePagination>;
   updateSorting: OnChangeFn<SortingState>;
   sorting: SortingState;
-  serverPagination: ArtistsQueryResponse["pagination"];
   pageCount: number;
   hasPrevPage: boolean;
   hasNextPage: boolean;
@@ -35,7 +32,6 @@ export function ArtistTable({
   updatePagination,
   updateSorting,
   sorting,
-  serverPagination,
   pageCount,
   hasPrevPage,
   hasNextPage
