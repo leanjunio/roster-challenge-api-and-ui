@@ -11,28 +11,40 @@ const ITEMS_PER_PAGE = 10;
  * @route GET /api/artists - Get all artists
  */
 ArtistRoutes.get('/', async (req: Request, res: Response) => {
-  const page = Number(req.query.page ?? 0);
-  const size = Number(req.query.size ?? ITEMS_PER_PAGE);
-  const query = {};
-  const skip = page * size;
-  const count = await Artist.estimatedDocumentCount(query);
-  const pageCount = Math.ceil(count / size);
-  const artists = await Artist.find(query).limit(size).skip(skip);
+  const page = Number(req.query.page) + 1;
+  const size = Number(req.query.size) ?? ITEMS_PER_PAGE;
+  const sortBy = String(req.query.sortBy) ?? 'payout';
+  const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1; 
+  const aggregate = Artist.aggregate([
+    {
+      $addFields: {
+        payout: { $multiply: ['$rate', '$streams'] },
+        yearsStreamed: { 
+          $cond: [
+            { $lt: [artistLookup['$artist'], SPOTIFY_CUTOFF_YEAR] }, 
+            { $subtract: [new Date().getFullYear(), SPOTIFY_CUTOFF_YEAR] }, 
+            { $subtract: [new Date().getFullYear(), artistLookup['$artist']] }
+          ] 
+        },
+      }
+    }, {
+      $addFields: {
+        monthlyPayout: { $divide: ['$payout', { $multiply: ['$yearsStreamed', 12] }] }
+      }
+    }
+  ]);
 
-  const artistWithPayout = artists.map(artist => {
-    const totalPayout = artist.rate * artist.streams;
-    const yearsStreamed = artistLookup[artist.artist] < SPOTIFY_CUTOFF_YEAR ? new Date().getFullYear() - SPOTIFY_CUTOFF_YEAR : new Date().getFullYear() - artistLookup[artist.artist];
-    const monthsStreamed = yearsStreamed * 12;
-    const artistWithPayout = { ...artist.toJSON(), payout: totalPayout, monthlyPayout: totalPayout / monthsStreamed };
-    return artistWithPayout;
-  });
+  const options = {
+    page,
+    limit: size,
+    sort: { [sortBy]: sortOrder },
+  }
+  
+  const artists = await (Artist as any).aggregatePaginate(aggregate, options);
 
   res.json({
-    pagination: {
-      count,
-      pageCount
-    },
-    artists: artistWithPayout
+    pagination: options,
+    artists
   });
 });
 

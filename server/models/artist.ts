@@ -1,13 +1,14 @@
-import { Schema, model, connect } from 'mongoose';
+import mongoose, { Schema, model, AggregatePaginateModel } from 'mongoose';
+import mongoosePaginate from "mongoose-aggregate-paginate-v2";
 
-type Artist = {
+type TArtist = {
   artist: string;
   rate: number;
   streams: number;
   isCompletelyPaid: boolean;
 }
 
-const artistSchema = new Schema<Artist>({
+const artistSchema = new Schema<TArtist>({
   artist: String,
   rate: Number,
   streams: Number,
@@ -17,4 +18,6 @@ const artistSchema = new Schema<Artist>({
   }
 });
 
-export const Artist = model<Artist>('Artist', artistSchema);
+artistSchema.plugin(mongoosePaginate);
+
+export const Artist = model<TArtist>('Artist', artistSchema);

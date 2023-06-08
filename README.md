@@ -18,7 +18,7 @@ You receive the data in the form of a [json file](./roster.json) containing an a
 
 Your minimum application requirements include:
 
-- A hosted MVC structure with separate front and back ends
+- A hosted MVC structure with separate front and back ends [x]
 - Displaying the list in a web browser [x]
 - Extending the list to include the calculated payout amount per artist [x]
 - CRUD services for artists and rates [x]

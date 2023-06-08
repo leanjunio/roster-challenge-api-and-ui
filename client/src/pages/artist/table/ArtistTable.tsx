@@ -1,6 +1,6 @@
-import { SortingState, flexRender, getCoreRowModel, getSortedRowModel, useReactTable, getPaginationRowModel, ColumnDef, createColumnHelper, OnChangeFn } from "@tanstack/react-table";
-import { useState } from "react";
-import { Artist } from "../../../types/artist";
+import { SortingState, flexRender, getCoreRowModel, getSortedRowModel, useReactTable, getPaginationRowModel, createColumnHelper, OnChangeFn } from "@tanstack/react-table";
+import { SetStateAction, useState } from "react";
+import { Artist, ArtistsQueryResponse } from "../../../types/artist";
 import { formatToCAD } from "../../../utils/currency";
 import { Checkbox } from "../../../components/inputs/Checkbox";
 import { Pagination } from "./Pagination";
@@ -18,7 +18,12 @@ type ArtistTableProps = {
   onDelete: (id: Artist["_id"], artist: Artist["artist"]) => void;
   pagination: TablePagination;
   updatePagination: OnChangeFn<TablePagination>;
-  serverPagination: ServerPagination;
+  updateSorting: OnChangeFn<SortingState>;
+  sorting: SortingState;
+  serverPagination: ArtistsQueryResponse["pagination"];
+  pageCount: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
 }
 
 export function ArtistTable({
@@ -28,15 +33,16 @@ export function ArtistTable({
   onDelete,
   pagination,
   updatePagination,
-  serverPagination
+  updateSorting,
+  sorting,
+  serverPagination,
+  pageCount,
+  hasPrevPage,
+  hasNextPage
 }: ArtistTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([{
-    id: "payout",
-    desc: true
-  }]);
   const columnHelper = createColumnHelper<Artist>();
 
-  const ColumnDefinitions: ColumnDef<Artist, any>[] = [
+  const ColumnDefinitions = [
     columnHelper.accessor((row) => row.artist, {
       id: "artist",
       cell: (info) => <div>{info.getValue()}</div>,
@@ -91,29 +97,29 @@ export function ArtistTable({
       },
       header: () => <div>Actions</div>
     }),
-  ]
+  ];
 
   const table = useReactTable({
     columns: ColumnDefinitions,
     data,
-    pageCount: serverPagination.pageCount,
+    pageCount,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     state: {
       sorting,
       pagination
     },
-    onSortingChange: setSorting,
+    onSortingChange: updateSorting,
+    onPaginationChange: updatePagination,
     manualPagination: true,
-    onPaginationChange: updatePagination
+    manualSorting: true,
   })
 
   const headers = table.getFlatHeaders();
   const rows = table.getRowModel().rows;
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto h-screen">
       <table className='table table-zebra table-pin-rows'>
         <thead>
           {headers.map(header => {
@@ -138,14 +144,14 @@ export function ArtistTable({
             )
           })}
         </thead>
-        <tbody className='overflow-auto'>
+        <tbody>
           {rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell, index) => {
                 return index === 0 ? (
-                  <th key={cell.id}>
+                  <td className="font-semibold" key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </th>
+                  </td>
                 ) : (
                   <td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -155,7 +161,7 @@ export function ArtistTable({
             </tr>
           ))}
         </tbody>
-        <Pagination table={table} />
+        <Pagination hasPrevPage={hasPrevPage} hasNextPage={hasNextPage} table={table} />
       </table>
     </div>
   )

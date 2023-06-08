@@ -1,6 +1,5 @@
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { Artist } from "../../../types/artist"
-import { Checkbox } from "../../../components/inputs/Checkbox";
 import { formatToCAD } from "../../../utils/currency";
 
 const columnHelper = createColumnHelper<Artist>();
