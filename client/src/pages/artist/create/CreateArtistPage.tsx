@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 const createArtistSchema = z.object({
   artist: z.string()
     .min(1, { message: "Artist name is required" })
-    .max(10, { message: "Artist name cannot exceed 10 characters" }),
+    .max(20, { message: "Artist name cannot exceed 20 characters" }),
   rate: z.number()
     .min(0.0000000001, { message: "Rate is required" })
     .max(5000, { message: "Exceeded max rate (5000)" }),

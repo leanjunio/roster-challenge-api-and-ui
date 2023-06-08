@@ -2,7 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Artist } from "../../../types/artist";
 import { UpdateArtistFormData, updateArtistSchema } from "./UpdateArtistPage";
-import { Checkbox } from "../../../components/inputs/Checkbox";
 
 type UpdateArtistFormProps = {
   data: Artist;
@@ -11,20 +10,18 @@ type UpdateArtistFormProps = {
 };
 
 export function UpdateArtistForm({ data, onSubmit, onCancel }: UpdateArtistFormProps) {
-  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<UpdateArtistFormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<UpdateArtistFormData>({
     resolver: zodResolver(updateArtistSchema),
     defaultValues: data,
     shouldUnregister: true
   });
-
-  const isCompletelyPaid = watch('isCompletelyPaid');
 
   function handleFormSubmit(data: UpdateArtistFormData) {
     onSubmit(data);
   }
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit(handleFormSubmit, e => console.log({ e }))} className="flex flex-col gap-3">
       <div className="form-control w-full">
         <label className="label">
           <span className="label-text">Artist Name</span>
@@ -72,13 +69,12 @@ export function UpdateArtistForm({ data, onSubmit, onCancel }: UpdateArtistFormP
       <div className="form-control">
         <label className="label cursor-pointer">
           <span className="label-text">Is Completely Paid</span>
-          <Checkbox onChange={() => {
-            setValue('isCompletelyPaid', !isCompletelyPaid)
-          }} name="isCompletelyPaid" value={isCompletelyPaid} id="isCompletelyPaid" />
-          <label className="label flex flex-col">
-            {/* <span className="label-text-alt">current value: {isCompletelyPaid.toString()}</span>
-            <span className="label-text-alt">fetched value: {data.isCompletelyPaid.toString()}</span> */}
-          </label>
+          <input
+            id="isCompletedPaid"
+            type="checkbox"
+            className="checkbox"
+            {...register("isCompletelyPaid")}
+          />
         </label>
         {!!errors.rate?.message && (
           <label className="label">
